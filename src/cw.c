@@ -331,9 +331,9 @@ static char *pal1[]={"black","blue","green","cyan","red","purple","brown",
 static char *pal1_invert[]={"white","blue+","green+","cyan+","red+","purple+",
  "yellow","grey","grey+","blue","green","cyan","red","purple","brown","black",
  "default","none",""};
-static char *pal2_orig[]={"\x1b[00;30m","\x1b[00;34m","\x1b[00;32m",
+static char *pal2_orig[]={"\x1b[00;90m","\x1b[00;34m","\x1b[00;32m",
  "\x1b[00;36m","\x1b[00;31m","\x1b[00;35m","\x1b[00;33m","\x1b[00;37m",
- "\x1b[01;30m","\x1b[01;34m","\x1b[01;32m","\x1b[01;36m","\x1b[01;31m",
+ "\x1b[01;90m","\x1b[01;34m","\x1b[01;32m","\x1b[01;36m","\x1b[01;31m",
  "\x1b[01;35m","\x1b[01;33m","\x1b[01;37m","\x1b[0m",""};
 static struct super_map sm[]={
  {"html",{"<font color=#000000>","<font color=#000080>",
@@ -863,7 +863,7 @@ char *convert_string(char *line){
     cwexit(1,"malloc() failed.");
    memset(tmp,0,(s*(cfgtable.x.tot*16+1)+s+1));
    on=j=l=k=0;
-   if(regcomp(&re,cfgtable.x.data[i],(cfgtable.noer?0:REG_EXTENDED)))
+   if(regcomp(&re,cfgtable.x.data[i],(cfgtable.noer?0:REG_EXTENDED)|REG_ICASE))
     free(tmp);
    else{
     while(k<s&&!regexec(&re,tbuf+k,1,&pm,(k?REG_NOTBOL:0))){
@@ -987,7 +987,7 @@ unsigned char regxcmp(char *str,char *pattern,unsigned char type){
  signed int r=0;
  regex_t re;
  if(cfgtable.ifregex){
-  if(regcomp(&re,pattern,(cfgtable.noer?0:REG_EXTENDED)|REG_NOSUB))
+  if(regcomp(&re,pattern,(cfgtable.noer?0:REG_EXTENDED)|REG_NOSUB|REG_ICASE))
    return(1);
   r=regexec(&re,str,0,0,0);
   regfree(&re);
